@@ -115,15 +115,14 @@ _.assign(Creep.prototype,{
     	    obj=Game.getObjectById(this.memory.destId)
     	    switch (this.memory.destType) {
     	        case 1:
-    	            var act=this[splist[this.memory.code].sourceAction](obj, splist[this.memory.code].sourceOption)
+    	            var act=this[splist[this.memory.code].sourceAction](obj, splist[this.memory.code].sourceOptions)
     	            this.say(splist[this.memory.code].sourceAction)
     	       break;
     	       case 2:
-    	            var act=this[splist[this.memory.code].destAction](obj, splist[this.memory.code].destOption)
+    	            var act=this[splist[this.memory.code].destAction](obj, splist[this.memory.code].destOptions)
     	            this.say(splist[this.memory.code].destAction)
     	       break;
     	    }
-    	    
     		if (act==ERR_NOT_IN_RANGE) {
                 ret ='stucked'
     		}

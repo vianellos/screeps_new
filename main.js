@@ -1,22 +1,26 @@
-console.log('Launching script...')
-/*utils=require('tool.utility')
-require('loris.spawner')*/
-loopnum=0
+utils=require('tool.utility')
+settings=require('config.index')
+require('loris.spawner')
+require('loris.creep')
 
+settings.startscript()
 
 module.exports.loop = function () {
-    console.log('Loop number '+loopnum)
-    loopnum++
+    settings.starttick()
 
-    /*for (var r in Game.spawns) {
+    for (var r in Game.spawns) {
         Game.spawns[r].lorisTurn()
     }
     
     
+    for (var r in Game.creeps) {
+        Game.creeps[r].lorisTurn()
+    }
+    
    
     
     
-    for (var r in Game.rooms) {
+    /*for (var r in Game.rooms) {
         //utils.log(Game.rooms[r], "room")
     }*/
     

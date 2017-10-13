@@ -7,7 +7,5 @@
  * mod.thing == 'a thing'; // true
  */
 
-module.exports = {
-    last: 0, 
-    varditest : Array("Saab", "Volvo", "BMW")
-};
+splist={}
+splist.ha01={'role':'harvester','max':2, 'body':[WORK,CARRY,CARRY,MOVE], "cost":250}

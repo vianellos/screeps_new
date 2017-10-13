@@ -13,6 +13,5 @@ module.exports = {
     },
     starttick: function() {
         Memory.ticknumber++
-        //console.log('Tick number '+Memory.ticknumber)
     }
 };

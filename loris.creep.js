@@ -4,8 +4,8 @@ _.assign(Creep.prototype,{
        if (this.ticksToLive<100) {
             this.assistedSuicide()   
        }
-       
-        switch(this.memory.role) {
+       this.lorisHarvest();
+        /*switch(this.memory.role) {
             case 'harvester':
                 this.lorisHarvest();
             break;
@@ -18,7 +18,7 @@ _.assign(Creep.prototype,{
             case 'repairer':
                 this.lorisHarvest();
             break;
-       }
+       }*/
    },
    lorisHarvest: function() {
        if (this.memory.action==null) {
@@ -179,7 +179,7 @@ _.assign(Creep.prototype,{
 	                this.setNewPath(res, 1);
 	            }
 	            else {
-	                console.log("Impossible to recycle. Suicide ".this.name)
+	                console.log("Impossible to recycle. Suicide "+this.name)
 	                this.suicide();
 	            }
 	        }
@@ -197,7 +197,7 @@ _.assign(Creep.prototype,{
 	                    this.setNewPath(res, 1);
 	                }
 	                else {
-	                    console.log("Impossible to recycle. Suicide ".this.name)
+	                    console.log("Impossible to recycle. Suicide "+this.name)
 	                    this.suicide();
 	                }
 	            }
@@ -209,7 +209,7 @@ _.assign(Creep.prototype,{
 	            if (this.lorisMove()) {
 	                obj=Game.getObjectById(this.memory.destId)
 	                obj.recycleCreep(this)
-	                console.log("Addio ".this.name)
+	                console.log("Addio "+this.name)
 	                
 	            }
 	        }

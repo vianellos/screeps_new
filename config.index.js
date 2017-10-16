@@ -71,15 +71,21 @@ module.exports = {
     setCreeoNumber: function() {
         for (var ro in Game.rooms) {
             Game.rooms[ro].memory.creepList=splist
-            if (Game.creeps.length<4) {
+            tc= _.sum(Game.creeps, c => true)
+            utils.log(tc, "creeps")
+            if (tc<4) {
                 Game.rooms[ro].memory.creepList.ha01.max=4;
+                console.log("carico v01")
                 break
             }
             
             filter={ filter: (structure) => { return (structure.structureType == STRUCTURE_CONTAINER); } }
-            if (!(Game.rooms[ro].find(FIND_MY_STRUCTURES,  filter) ) ) {
+            conta=Game.rooms[ro].find(FIND_MY_STRUCTURES,  filter)
+            //utils.log(conta, "conta")
+            if (conta.length==0 ) {
                 Game.rooms[ro].memory.creepList.ha01.max=4;
                 Game.rooms[ro].memory.creepList.bu01.max=4;
+                console.log("carico v02")
                 break
             }
             else {
@@ -87,6 +93,8 @@ module.exports = {
                 Game.rooms[ro].memory.creepList.bu02.max=3;
                 Game.rooms[ro].memory.creepList.up02.max=11;
                 Game.rooms[ro].memory.creepList.re02.max=1;
+                Game.rooms[ro].memory.creepList.co02.max=1;
+                console.log("carico v03")
                 break
             }
             

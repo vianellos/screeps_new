@@ -6,10 +6,8 @@ _.assign(Spawn.prototype,{
             var list= _.filter(Game.creeps, (creep) => creep.memory.code == cd);
             if (list.length<this.room.memory.creepList[cd].max) {
                 crbody=this.room.memory.bodylist[this.room.memory.creepList[cd].body]
-                utils.log(crbody, "csr  body")
                 
                 if (crbody.cost<=this.room.energyAvailable) {
-                    
                     this.spawnNew(cd, this.room.memory.creepList[cd], crbody)
                     break;
                 }
@@ -19,7 +17,8 @@ _.assign(Spawn.prototype,{
    spawnNew: function(cd, obj, body) {
         if (!(this.spawning)) {
             var newCreep =this.createCreep(body.body, undefined, {role: obj.role, code:cd});
-	        console.log("Spawning new "+obj.role+" ("+obj.body+"-"+obj.code+") named "+newCreep+"")
+            //utils.log(obj, "obj")
+	        console.log("Spawning new "+obj.role+" ("+obj.body+") named "+newCreep+"")
         }
    }
 });

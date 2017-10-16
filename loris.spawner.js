@@ -1,20 +1,25 @@
-spgrid=require('config.spgrid')
 
 _.assign(Spawn.prototype,{
     
    lorisTurn:function() {
        for (var cd in splist) {
             var list= _.filter(Game.creeps, (creep) => creep.memory.code == cd);
-            if (list.length<splist[cd].max) {
-                if (splist[cd].cost<=this.room.energyAvailable) {
-                    this.spawnNew(cd, splist[cd])
+            if (list.length<this.room.memory.creepList[cd].max) {
+                crbody=this.room.memory.bodylist[this.room.memory.creepList[cd].body]
+                utils.log(crbody, "csr  body")
+                
+                if (crbody.cost<=this.room.energyAvailable) {
+                    
+                    this.spawnNew(cd, this.room.memory.creepList[cd], crbody)
                     break;
                 }
             }
        }
    }, 
-   spawnNew: function(cd, obj) {
-        var newCreep =this.createCreep(obj.body, undefined, {role: obj.role, code:cd});
-	    console.log("Spawning new "+obj.role+" ("+obj.body+") named "+newCreep+"")
+   spawnNew: function(cd, obj, body) {
+        if (!(this.spawning)) {
+            var newCreep =this.createCreep(body.body, undefined, {role: obj.role, code:cd});
+	        console.log("Spawning new "+obj.role+" ("+obj.body+"-"+obj.code+") named "+newCreep+"")
+        }
    }
 });

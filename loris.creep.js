@@ -116,9 +116,6 @@ _.assign(Creep.prototype,{
 	    }
 	    else {
     	    obj=Game.getObjectById(this.memory.destId)
-    	    if (this.memory.code=='re02') {
-    	        utils.log(obj, 'obj')
-    	    }
     	    switch (this.memory.destType) {
     	        case 1:
     	            var act=this[splist[this.memory.code].sourceAction](obj, splist[this.memory.code].sourceOptions)

@@ -6,7 +6,7 @@ _.assign(Spawn.prototype,{
        for (var cd in splist) {
             var list= _.filter(Game.creeps, (creep) => creep.memory.code == cd);
             if (list.length<splist[cd].max) {
-                if (splist[cd].cost<=this.energy) {
+                if (splist[cd].cost<=this.room.energyAvailable) {
                     this.spawnNew(cd, splist[cd])
                     break;
                 }

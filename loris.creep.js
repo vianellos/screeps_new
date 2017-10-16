@@ -11,6 +11,9 @@ _.assign(Creep.prototype,{
             case 'builder':
                 this.lorisHarvest();
             break;
+            case 'repairer':
+                this.lorisHarvest();
+            break;
        }
    },
    lorisHarvest: function() {
@@ -29,7 +32,7 @@ _.assign(Creep.prototype,{
                 this.memory.action=this.setNewTarget(false);
                 if (this.memory.action=='idle') {
                     this.say('Going away...')
-                    this.moveTo(41, 25)
+                    this.moveTo(28, 12)
                 }
             break;
             case 'work':
@@ -113,6 +116,9 @@ _.assign(Creep.prototype,{
 	    }
 	    else {
     	    obj=Game.getObjectById(this.memory.destId)
+    	    if (this.memory.code=='re02') {
+    	        utils.log(obj, 'obj')
+    	    }
     	    switch (this.memory.destType) {
     	        case 1:
     	            var act=this[splist[this.memory.code].sourceAction](obj, splist[this.memory.code].sourceOptions)
@@ -130,7 +136,17 @@ _.assign(Creep.prototype,{
     		    ret ='stucked'
     		}
     		else if (act==0) {
-    			ret='work'
+    			if (this.memory.role=='repairer') {
+    			    if (obj.hits==obj.hitsMax) {
+    			        ret='stucked'
+    			    }
+    			    else {
+    			        ret='work'
+    			    }
+    			}
+    			else {
+    			    ret='work'
+    			}
     		}
     		else {
     			ret ='stucked'

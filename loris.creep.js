@@ -1,6 +1,10 @@
 _.assign(Creep.prototype,{
     
    lorisTurn:function() {
+       if (this.ticksToLive<100) {
+            this.assistedSuicide()   
+       }
+       
         switch(this.memory.role) {
             case 'harvester':
                 this.lorisHarvest();
@@ -23,7 +27,9 @@ _.assign(Creep.prototype,{
        this.say(this.memory.action)
        switch (this.memory.action) {
             case 'move':
-                this.lorisMove()
+                if (this.lorisMove()) {
+                    this.memory.action='work'
+                }
             break;
             case 'stucked':
                 this.memory.action=this.setNewTarget(false);
@@ -86,15 +92,17 @@ _.assign(Creep.prototype,{
 	},
     lorisMove: function () {
         if (this.hasArrived()){
-            this.memory.action='work'
+            return true
         }else if (this.memory.lastX!=this.pos.x || this.memory.lastY!=this.pos.y || this.memory.lastFatigue!=this.fatigue) {
             this.memory.lastX=this.pos.x
             this.memory.lastY=this.pos.y
             this.memory.lastFatigue=this.fatigue
             ret=this.moveByPath(Room.deserializePath(this.memory.savedPath))
+            return false
         }
         else {
             this.memory.action='stucked'
+            return false
         }
     },
 	hasArrived: function () {
@@ -150,5 +158,62 @@ _.assign(Creep.prototype,{
     		}
 	    }
 		return ret
+	},
+	assistedSuicide: function() {
+	    if ( (this.memory.action!="suicide") && (this.memory.action!="empty") ) {
+	        if (this.carry.energy>0) {
+	            rtype=FIND_STRUCTURES
+	            rfilter= { filter: (structure) => { return ( ((structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) && structure.energy < structure.energyCapacity) || (structure.structureType == STRUCTURE_CONTAINER && structure.store.energy<structure.storeCapacity)); } }
+	            var res=this.pos.findClosestByPath(rtype, rfilter)
+	            if (res) {
+	                this.memory.action='empty'
+	                this.setNewPath(res, 1);
+	            }
+	        }
+	        else {
+	            rtype=FIND_STRUCTURES
+	            rfilter= { filter: (structure) => { return ( ((structure.structureType == STRUCTURE_SPAWN) && structure.energy < structure.energyCapacity)); } }
+	            var res=this.pos.findClosestByPath(rtype, rfilter)
+	            if (res) {
+	                this.memory.action='suicide'
+	                this.setNewPath(res, 1);
+	            }
+	            else {
+	                console.log("Impossible to recycle. Suicide ".this.name)
+	                this.suicide();
+	            }
+	        }
+	    }
+	    else {
+	        if (this.memory.action=='empty') {
+	            if (this.lorisMove()) {
+	                obj=Game.getObjectById(this.memory.destId)
+	                this.transfer(obj, RESOURCE_ENERGY)
+	                rtype=FIND_STRUCTURES
+	                rfilter= { filter: (structure) => { return ( ((structure.structureType == STRUCTURE_SPAWN) && structure.energy < structure.energyCapacity)); } }
+	                var res=this.pos.findClosestByPath(rtype, rfilter)
+	                if (res) {
+	                    this.memory.action='suicide'
+	                    this.setNewPath(res, 1);
+	                }
+	                else {
+	                    console.log("Impossible to recycle. Suicide ".this.name)
+	                    this.suicide();
+	                }
+	            }
+	            else {
+	                
+	            }
+	        }
+	        else if (this.memory.action=='suicide') {
+	            if (this.lorisMove()) {
+	                obj=Game.getObjectById(this.memory.destId)
+	                obj.recycleCreep(this)
+	                console.log("Addio ".this.name)
+	                
+	            }
+	        }
+	    }
+	    
 	}
 });

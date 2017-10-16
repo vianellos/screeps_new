@@ -19,6 +19,7 @@ module.exports = {
         Memory.ticknumber++
         this.setBodyList()
         this.setCreeoNumber()
+        this.clearMemory()
     },
     setBodyList: function() {
         for (var ro in Game.rooms) {
@@ -83,8 +84,8 @@ module.exports = {
             }
             else {
                 Game.rooms[ro].memory.creepList.ha02.max=11;
-                Game.rooms[ro].memory.creepList.bu02.max=6;
-                Game.rooms[ro].memory.creepList.up02.max=6;
+                Game.rooms[ro].memory.creepList.bu02.max=3;
+                Game.rooms[ro].memory.creepList.up02.max=11;
                 Game.rooms[ro].memory.creepList.re02.max=1;
                 break
             }
@@ -92,6 +93,13 @@ module.exports = {
                         
             
             
+        }
+    },
+    clearMemory: function() {
+        for(var i in Memory.creeps) {
+            if(!Game.creeps[i]) {
+                delete Memory.creeps[i];
+            }
         }
     }
 };
